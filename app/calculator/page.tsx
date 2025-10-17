@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 
-export default function calculator() {
+export default function Calculator() {
     const [variableOne, setVariableOne] = useState('')
     const [variableTwo, setVariableTwo] = useState('')
     const [aritmatika, setAritmatika] = useState('+')
