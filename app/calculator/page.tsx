@@ -39,9 +39,9 @@ export default function Calculator() {
         {/* Kotak kalkulator dengan gradiasi pink -> ungu */}
     <div className='bg-gradient-to-br from-pink-400 to-purple-300 p-6 rounded-lg shadow-lg w-[300px] text-center text-white'>
             <h1 className='text-lg font-bold mb-4'>KALKULATOR</h1>
-            <input value={variableOne} onChange={(e) => setVariableOne(e.target.value)} className='w-full mb-2 p-2 rounded text-black' placeholder='Masukkan Bilangan Pertama' type='number'
+            <input value={variableOne} onChange={(e) => setVariableOne(e.target.value)} className='w-full mb-2 p-2 rounded text-black bg-white' placeholder='Masukkan Bilangan Pertama' type='number'
         />
-            <input value={variableTwo} onChange={(e) => setVariableTwo(e.target.value)} className='w-full mb-2 p-2 rounded text-black' placeholder='Masukkan Bilangan Kedua' type='number'
+            <input value={variableTwo} onChange={(e) => setVariableTwo(e.target.value)} className='w-full mb-2 p-2 rounded text-black bg-purple-600 placeholder-white' placeholder='Masukkan Bilangan Kedua' type='number'
         />
         <div className='flex items-center justify-between mb-3'>
             {/* pastikan tag select tanpa spasi setelah'<' */}
@@ -61,7 +61,7 @@ export default function Calculator() {
             type='text'
             readOnly
             value={result}
-            className='w-full p-2 rounded text-black text-center font-semibold'
+            className='w-full p-2 rounded text-white bg-purple-800 text-center font-semibold'
         />
         </div>
     </div>
