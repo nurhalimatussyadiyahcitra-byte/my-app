@@ -1,16 +1,24 @@
 'use client'
-import React, { useState } from 'react'
+import { stringify } from 'querystring'
+import React, { useEffect, useState } from 'react'
 
 function TodoList() {
 
     const [input, setInput] = useState('')
     const [dataTodo, setDataTodo] = useState<string[]>([])
     const [search, setSearch] = useState('')
-    const [filteredTodo, setFilteredTodo] = useState<string[]>([])
 
-    // Simpan data (tidak boleh duplikat)
+    useEffect(() => {
+        const storedData = localStorage.getItem('dataTodo')
+        if (storedData) {
+            setDataTodo(JSON.parse(storedData))
+        }
+    }, [])
+
     const addDataTodo = () => {
         if (input.trim().length === 0) {
+            setInput('')
+
             alert('Masukkan Todo terlebih dahulu!')
             return
         }
@@ -22,30 +30,21 @@ function TodoList() {
 
         setDataTodo([...dataTodo, input.trim()])
         setInput('')
+        localStorage.setItem('dataTodo', JSON.stringify([...dataTodo, input]))
+
     }
 
-    // Hapus data
     const removeDataTodo = (index: number) => {
-        const newData = dataTodo.filter((_val, idx) => idx !== index)
-        setDataTodo(newData)
+        const tempData = [...dataTodo]
+        const removeData = tempData.filter((_val, idx) => idx !== index)
+        setDataTodo(removeData)
+        localStorage.setItem('dataTodo', JSON.stringify([removeData]))
+
     }
 
-    // Cari data
-    const searchDataTodo = () => {
-        if (search.trim().length === 0) {
-            alert('Masukkan kata untuk mencari!')
-            return
-        }
-
-        const result = dataTodo.filter((item) =>
-            item.toLowerCase().includes(search.toLowerCase())
-        )
-        setFilteredTodo(result)
-    }
-
-
-    // Data yang ditampilkan (kalau ada hasil pencarian)
-    const displayData = filteredTodo.length > 0 ? filteredTodo : dataTodo
+    const filtereData = dataTodo.filter((item) =>
+        item.toLowerCase().includes(search.toLowerCase())
+    )
 
     return (
         <div className='w-[378px] m-auto p-[64px]'>
@@ -54,16 +53,15 @@ function TodoList() {
                     <h1 className='text-[56px] font-[600] leading-none'>Todo</h1>
                     <h1 className='text-[56px] font-[600] leading-none'>List</h1>
                 </div>
-                
+
                 <div className='flex justify-center items-center bg-[#F2F3FF] w-[64px] h-[64px] rounded-2x1 ml-8 shrink-0'>
-                   <span className='text-3x1 leading-none'>🚀</span> 
+                    <span className='text-3x1 leading-none'>🚀</span>
                 </div>
             </div>
 
             <p>Notes:</p>
             <div className='h-[1px] bg-[#EBEBEB] mb-[21px] mt-[32px]' />
 
-            {/* Input Simpan */}
             <div className='flex items-center gap-2 mb-[20px]'>
                 <div className='flex-1'>
                     <input
@@ -74,14 +72,13 @@ function TodoList() {
                     />
                 </div>
                 <button
-                    className='bg-[#503E9D] text-white h-[40px] px-[16px] rounded-lg text-center'
+                    className='bg-[#503E9D] text-white h-[40px] w-[114px] px-[16px] rounded-lg text-center'
                     onClick={addDataTodo}
                 >
                     Simpan
                 </button>
             </div>
 
-            {/* Input Cari */}
             <div className='flex items-center gap-2 mb-[43px]'>
                 <div className='flex-1'>
                     <input
@@ -91,16 +88,9 @@ function TodoList() {
                         placeholder='Cari Todo'
                     />
                 </div>
-                <button
-                    className='bg-[#503E9D] text-white h-[40px] px-[16px] rounded-lg text-center'
-                    onClick={searchDataTodo}
-                >
-                    Cari
-                </button>
             </div>
 
-            {/* Tampilkan Data */}
-            {displayData.map((value, index) => {
+            {filtereData.map((value, index) => {
                 return (
                     <div key={String(index)} className='flex items-center justify-between mb-[16px]'>
                         <div className='flex items-center gap-2'>
